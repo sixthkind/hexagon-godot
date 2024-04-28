@@ -4,4 +4,5 @@ class_name TerrainType extends Resource
 
 @export_group("References")
 @export var cover_mesh: PackedScene
+@export var overhang_mesh: PackedScene
 @export var terrain_mesh: PackedScene

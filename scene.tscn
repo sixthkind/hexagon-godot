@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://br05ybjfb7xtq"]
+[gd_scene load_steps=13 format=3 uid="uid://br05ybjfb7xtq"]
 
 [ext_resource type="Script" path="res://scripts/FreeLockCamera3D.gd" id="1_3bny6"]
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_o10kw"]
 [ext_resource type="Script" path="res://scripts/TerrainType.gd" id="2_b56jq"]
 [ext_resource type="PackedScene" uid="uid://bkdnxf77bq56r" path="res://models/terrain/grass_cover.glb" id="2_s0og2"]
+[ext_resource type="PackedScene" uid="uid://dxmtvw53ncot7" path="res://models/terrain/grass_overhang.glb" id="4_0svjd"]
 [ext_resource type="PackedScene" uid="uid://b5qhdi4j2lfj4" path="res://models/terrain/dirt_terrain.glb" id="4_lnbnb"]
 [ext_resource type="PackedScene" uid="uid://n8tedky57mt0" path="res://scenes/hexagon.tscn" id="5_u0dwq"]
 
@@ -31,6 +32,7 @@ auto_exposure_enabled = true
 script = ExtResource("2_b56jq")
 name = "grass"
 cover_mesh = ExtResource("2_s0og2")
+overhang_mesh = ExtResource("4_0svjd")
 terrain_mesh = ExtResource("4_lnbnb")
 
 [node name="Scene" type="Node3D"]

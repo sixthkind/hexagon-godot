@@ -22,6 +22,10 @@ static var edge_offsets: Array[Vector3] = [
 	Vector3(-0.5, 0.5, 0), Vector3(0, 0.5, -0.5), Vector3(0.5, 0, -0.5),
 ]
 
+static var edge_angles: Array[float] = [
+	0, PI / 3.0, 2 * PI / 3.0, PI, 4 * PI / 3.0, 5 * PI / 3.0,
+]
+
 ## Get dimensions
 static func get_width() -> float:
 	return 2 * HexagonUtils._size

@@ -37,6 +37,20 @@ func place_meshes():
 	var cover_mesh: Node3D = self.terrain_type.cover_mesh.instantiate()
 	mesh_parent.add_child(cover_mesh)
 	cover_mesh.position = Vector3(0, self.height, 0)
+	
+	# Place overhang meshes
+	if self.terrain_type.overhang_mesh == null: return
+	var neighbours: Array[Vector3] = get_neighbour_positions()
+	
+	for i: int in range(6):
+		# Only create overhangs when neighbour is further down
+		if neighbours[i] in world.hexagons and world.hexagons[neighbours[i]].height >= self.height:
+			continue
+		
+		var overhang_mesh: Node3D = self.terrain_type.overhang_mesh.instantiate()
+		mesh_parent.add_child(overhang_mesh)
+		overhang_mesh.position = Vector3(0, self.height, 0)
+		overhang_mesh.rotation = Vector3(0, HexagonUtils.edge_angles[i], 0)
 
 func update_collider():
 	var collider: CollisionPolygon3D = find_child("Collider")
