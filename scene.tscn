@@ -1,5 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://br05ybjfb7xtq"]
+[gd_scene load_steps=12 format=3 uid="uid://br05ybjfb7xtq"]
 
+[ext_resource type="Script" path="res://scripts/FreeLockCamera3D.gd" id="1_3bny6"]
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_o10kw"]
 [ext_resource type="Script" path="res://scripts/TerrainType.gd" id="2_b56jq"]
 [ext_resource type="PackedScene" uid="uid://bkdnxf77bq56r" path="res://models/terrain/grass_cover.glb" id="2_s0og2"]
@@ -45,6 +46,7 @@ shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.923297, 0.384086, 0, -0.384086, 0.923297, 0, 6.7517, 13.2446)
+script = ExtResource("1_3bny6")
 
 [node name="World" type="Node3D" parent="."]
 script = ExtResource("1_o10kw")
