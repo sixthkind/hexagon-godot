@@ -1,7 +1,7 @@
 # Static class with hexagon related functions
 class_name HexagonUtils
 
-static var _size: float
+static var _size: float = 1
 
 # Neighbours in counter clockwise order
 static var neighbour_offsets: Array[Vector3] = [
