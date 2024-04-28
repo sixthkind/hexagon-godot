@@ -17,7 +17,7 @@ func initialise(grid_position: Vector3, terrain_type: TerrainType, world: World)
 func update_meshes():
 	remove_meshes()
 	place_meshes()
-	#TODO: collider
+	update_collider()
 
 func remove_meshes():
 	for child: Node3D in find_child("Meshes").get_children():
@@ -38,6 +38,12 @@ func place_meshes():
 	mesh_parent.add_child(cover_mesh)
 	cover_mesh.position = Vector3(0, self.height, 0)
 
+func update_collider():
+	var collider: CollisionPolygon3D = find_child("Collider")
+	var half_height: float = (self.height + 0.15) / 2
+	collider.position = Vector3(0, half_height, 0)
+	collider.depth = half_height
+	
 func get_min_tile_height() -> int:
 	var min_height: int = TYPE_MAX
 	

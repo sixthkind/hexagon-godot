@@ -33,7 +33,6 @@ func generate_hexagons():
 			var hexagon: Hexagon = hexagon_instance.instantiate().initialise(hexagon_grid_position, terrain_types[0], self)
 			find_child("Hexagons").add_child(hexagon)
 			hexagon.global_position = MathUtils.with_y(hexagon_global_position, 0)
-			print(hexagon_global_position)
 			
 			hexagons[hexagon_grid_position] = hexagon
 
