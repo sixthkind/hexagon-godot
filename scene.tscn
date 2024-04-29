@@ -36,6 +36,8 @@ overhang_mesh = ExtResource("4_0svjd")
 terrain_mesh = ExtResource("4_lnbnb")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_3kst5"]
+subdivide_width = 10
+subdivide_depth = 10
 
 [node name="Scene" type="Node3D"]
 
@@ -53,6 +55,7 @@ transform = Transform3D(1, 0, 0, 0, 0.923297, 0.384086, 0, -0.384086, 0.923297, 
 script = ExtResource("1_3bny6")
 
 [node name="World" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 script = ExtResource("1_o10kw")
 hexagon_count = 7
 terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr")])

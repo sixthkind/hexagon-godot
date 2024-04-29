@@ -2,9 +2,18 @@ shader_type spatial;
 
 uniform vec3 shallow_colour : source_color;
 uniform vec3 deep_colour : source_color;
-uniform float max_depth: hint_range(0.1, 10);
-uniform float absorbance: hint_range(0.0, 1.0, 0.1) = 0.5;
+uniform float max_depth: hint_range(0.1, 10) = 1;
+uniform float absorbance: hint_range(0.0, 1.0, 0.1) = 0.7;
+uniform float fresnel_amount: hint_range(0.0, 10.0, 0.1) = 5;
+uniform float fresnel_strength: hint_range(0.0, 1.0, 0.1) = 0.3;
+uniform float foam_depth_cutoff: hint_range(0.0, 1.0, 0.01) = 0.3;
 
+uniform sampler2D displacement_noise;
+uniform vec2 wave_direction = vec2(1, 0);
+uniform float wave_speed: hint_range(0, 10.0, 0.1) = 1;
+uniform float wave_height: hint_range(0, 1.0, 0.01) = 0.05;
+
+uniform sampler2D screen_texture: hint_screen_texture, repeat_disable, filter_nearest;
 uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;
 
 float remap(float value, float current_min, float current_max, float new_min, float new_max) {
@@ -12,8 +21,18 @@ float remap(float value, float current_min, float current_max, float new_min, fl
 	return new_min + old_percentage * (new_max - new_min);
 }
 
-vec3 screen(vec3 base, vec3 blend){
-	return 1.0 - (1.0 - base) * (1.0 - blend);
+float fresnel(float amount, vec3 normal, vec3 view)
+{
+	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0)), amount);
+}
+
+void vertex() {
+	float displacement = textureLod(
+			displacement_noise, 
+			UV + (TIME * normalize(wave_direction)) * wave_speed / 10.0, 
+			0.0).r * 2.0 - 1.0;
+	
+	VERTEX.y += displacement * wave_height;
 }
 
 void fragment() {
@@ -36,8 +55,15 @@ void fragment() {
 	alpha_blend = clamp(1.0 - exp(alpha_blend), 0.0, 1.0);
 	
 	// Mix them all together
-	vec3 color_out = mix(deep_colour, shallow_colour, depth_fade_blend);
+	vec3 color_out = mix(deep_colour, shallow_colour, depth_fade_blend) + fresnel_strength * fresnel(fresnel_amount, NORMAL, VIEW);
+	
+	// Add white foam
+	if (vertical_depth < foam_depth_cutoff) {
+		color_out = vec3(1);
+	}
 	
 	ALBEDO = color_out;
 	ALPHA = alpha_blend;
+	ROUGHNESS = 0.02;
+	METALLIC = 0.0;
 }
