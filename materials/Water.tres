@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://d3xg18xwqh1pq"]
+
+[ext_resource type="Material" uid="uid://bcyp542pqibbn" path="res://materials/water_material.tres" id="1_3ix23"]
+
+[resource]
+resource_name = "Water"
+next_pass = ExtResource("1_3ix23")

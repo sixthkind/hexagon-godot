@@ -11,7 +11,7 @@ func initialise(grid_position: Vector3, terrain_type: TerrainType, world: World)
 	self.grid_position = grid_position
 	self.terrain_type = terrain_type
 	self.world = world
-	self.height = randi_range(0, 5)
+	self.height = 0 if grid_position.length() > 3 else randi_range(0, 5)
 	return self
 
 func update_meshes():
