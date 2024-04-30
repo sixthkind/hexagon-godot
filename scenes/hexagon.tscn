@@ -8,6 +8,7 @@ script = ExtResource("1_r2gns")
 [node name="Meshes" type="Node3D" parent="."]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 8
 
 [node name="Collider" type="CollisionPolygon3D" parent="StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
