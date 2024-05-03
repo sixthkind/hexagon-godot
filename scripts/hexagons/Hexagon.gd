@@ -90,6 +90,10 @@ func set_height(new_height: int, force: int):
 func update_height(change: int):
 	set_height(height + change, TYPE_MAX)
 
+func set_terrain_type(new_terrain_type: TerrainType):
+	self.terrain_type = new_terrain_type
+	update_meshes()
+
 func get_min_tile_height() -> int:
 	var min_height: int = TYPE_MAX
 	

@@ -18,6 +18,8 @@ var hexagons: Dictionary = {} # Key = cube position
 var center_highlighted_hexagon_position: Vector3 = Vector3.INF
 var highlighted_hexagon_positions: Array[Vector3] = []
 
+enum Mode { View, Terrain, Decoration }
+var mode: Mode = Mode.Terrain
 var edit_size: int = 1
 
 func generate_map():
@@ -56,19 +58,30 @@ func _input(event):
 		keyboard_input(event)
 	
 	if event is InputEventMouseButton and event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
-		interact_terrain(event)
+		if mode != Mode.View:
+			interact_terrain(event)
 
 func keyboard_input(event: InputEventKey):
 	if event.keycode == KEY_UP:
 		self.edit_size = min(self.edit_size + 1, self.max_edit_size)
 	elif event.keycode == KEY_DOWN:
 		self.edit_size = max(self.edit_size - 1, 0)
+	elif event.keycode == KEY_LEFT:
+		self.mode = wrap(self.mode - 1, 0, len(Mode.values()))
+	elif event.keycode == KEY_RIGHT:
+		self.mode = wrap(self.mode + 1, 0, len(Mode.values()))
 
 func interact_terrain(event: InputEventMouseButton):
-	if event.ctrl_pressed:
-		level_terrain()
-	else:
-		raise_terrain(-1 if event.shift_pressed else 1)
+	if mode == Mode.Terrain:
+		if event.ctrl_pressed:
+			level_terrain()
+		else:
+			raise_terrain(-1 if event.shift_pressed else 1)
+	elif mode == Mode.Decoration:
+		if event.ctrl_pressed:
+			set_decoration()
+		else:
+			change_decoration(-1 if event.shift_pressed else 1)
 
 func level_terrain():
 	if center_highlighted_hexagon_position == Vector3.INF: return
@@ -88,6 +101,8 @@ func level_terrain():
 			hexagons[update_position].update_meshes()
 
 func raise_terrain(force: int):
+	if center_highlighted_hexagon_position == Vector3.INF: return
+	
 	var hexagons_to_update: Dictionary = {} # Used as set
 		
 	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
@@ -103,6 +118,18 @@ func raise_terrain(force: int):
 			if update_position in hexagons:
 				hexagons[update_position].update_meshes()
 
+func set_decoration():
+	if center_highlighted_hexagon_position == Vector3.INF: return
+	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+		hexagons[highlighted_hexagon_position].set_terrain_type(hexagons[center_highlighted_hexagon_position].terrain_type)
+
+func change_decoration(index_change: int):
+	if center_highlighted_hexagon_position == Vector3.INF: return
+	
+	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+		var new_terrain_type_index: int = wrap(terrain_types.find(hexagons[highlighted_hexagon_position].terrain_type) + index_change, 0, len(terrain_types))
+		hexagons[highlighted_hexagon_position].set_terrain_type(terrain_types[new_terrain_type_index])
+	
 func _process(_delta):
 	update_selection()
 
@@ -115,7 +142,7 @@ func update_selection():
 	
 	highlighted_hexagon_positions = []
 	
-	if intersection:
+	if intersection and mode != Mode.View:
 		center_highlighted_hexagon_position = intersection["collider"].get_parent().grid_position
 
 		for q: int in range(center_highlighted_hexagon_position.x - edit_size, center_highlighted_hexagon_position.x + edit_size + 1):
