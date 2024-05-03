@@ -77,7 +77,7 @@ func level_terrain():
 	var height = hexagons[center_highlighted_hexagon_position].height
 	
 	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
-		hexagons[highlighted_hexagon_position].set_height(height)
+		hexagons[highlighted_hexagon_position].set_height(height, 1)
 		hexagons_to_update[highlighted_hexagon_position] = true
 		
 		for neighbour: Vector3 in hexagons[highlighted_hexagon_position].get_neighbour_positions():
