@@ -83,9 +83,11 @@ func update_collider():
 	collider.position = Vector3(0, height / 2, 0)
 	collider.depth = height
 
+func set_height(height: int):
+	self.height = clamp(height, 0, world.max_hexagon_height)
+
 func update_height(change: int):
-	height += change
-	height = clamp(height, 0, world.max_hexagon_height)
+	set_height(height + change)
 
 func get_min_tile_height() -> int:
 	var min_height: int = TYPE_MAX

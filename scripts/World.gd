@@ -56,7 +56,7 @@ func _input(event):
 		keyboard_input(event)
 	
 	if event is InputEventMouseButton and event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
-		deform_terrain(event)
+		interact_terrain(event)
 
 func keyboard_input(event: InputEventKey):
 	if event.keycode == KEY_UP:
@@ -64,8 +64,30 @@ func keyboard_input(event: InputEventKey):
 	elif event.keycode == KEY_DOWN:
 		self.edit_size = max(self.edit_size - 1, 0)
 
-func deform_terrain(event: InputEventMouseButton):
-	var force: int = -1 if event.shift_pressed else 1
+func interact_terrain(event: InputEventMouseButton):
+	if event.ctrl_pressed:
+		level_terrain()
+	else:
+		raise_terrain(-1 if event.shift_pressed else 1)
+
+func level_terrain():
+	if center_highlighted_hexagon_position == Vector3.INF: return
+	
+	var hexagons_to_update: Dictionary = {} # Used as set
+	var height = hexagons[center_highlighted_hexagon_position].height
+	
+	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+		hexagons[highlighted_hexagon_position].set_height(height)
+		hexagons_to_update[highlighted_hexagon_position] = true
+		
+		for neighbour: Vector3 in hexagons[highlighted_hexagon_position].get_neighbour_positions():
+			hexagons_to_update[neighbour] = true
+
+	for update_position in hexagons_to_update.keys():
+		if update_position in hexagons:
+			hexagons[update_position].update_meshes()
+
+func raise_terrain(force: int):
 	var hexagons_to_update: Dictionary = {} # Used as set
 		
 	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
