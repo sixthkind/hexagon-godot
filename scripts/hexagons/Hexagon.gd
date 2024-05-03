@@ -54,7 +54,7 @@ func place_meshes():
 
 func update_collider():
 	var collider: CollisionPolygon3D = find_child("Collider")
-	var half_height: float = (self.height + 0.15) / 2
+	var half_height: float = (self.height + HexagonUtils.COVER_HEIGHT) / 2
 	collider.position = Vector3(0, half_height, 0)
 	collider.depth = half_height
 

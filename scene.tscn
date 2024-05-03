@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://br05ybjfb7xtq"]
+[gd_scene load_steps=16 format=3 uid="uid://br05ybjfb7xtq"]
 
 [ext_resource type="Script" path="res://scripts/FreeLockCamera3D.gd" id="1_3bny6"]
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_o10kw"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b5qhdi4j2lfj4" path="res://models/terrain/dirt_terrain.glb" id="4_lnbnb"]
 [ext_resource type="PackedScene" uid="uid://n8tedky57mt0" path="res://scenes/hexagon.tscn" id="5_u0dwq"]
 [ext_resource type="Material" uid="uid://bcyp542pqibbn" path="res://materials/water_material.tres" id="8_hs4hb"]
+[ext_resource type="PackedScene" uid="uid://c0v6vgdwu3y6m" path="res://models/highlight.glb" id="8_l371f"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2c7br"]
 sky_top_color = Color(0.282353, 0.619608, 0.698039, 1)
@@ -60,8 +61,11 @@ script = ExtResource("1_o10kw")
 hexagon_count = 7
 terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr")])
 hexagon_instance = ExtResource("5_u0dwq")
+highlight_instance = ExtResource("8_l371f")
 
 [node name="Hexagons" type="Node3D" parent="World"]
+
+[node name="Highlight" type="Node3D" parent="World"]
 
 [node name="water2" type="MeshInstance3D" parent="World"]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 5, 0)

@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bxj8gcfatnipk"]
+
+[resource]
+resource_name = "Overlay"
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.905882, 0.870588, 0.313726, 0.247059)

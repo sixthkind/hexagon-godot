@@ -2,6 +2,7 @@
 class_name HexagonUtils
 
 static var _size: float = 1
+static var COVER_HEIGHT: float = 0.3
 
 # Neighbours in counter clockwise order
 static var neighbour_offsets: Array[Vector3] = [
