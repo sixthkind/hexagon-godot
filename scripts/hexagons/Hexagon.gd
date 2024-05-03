@@ -24,21 +24,26 @@ func remove_meshes():
 		child.queue_free()
 
 func place_meshes():
-	var min_height: int = get_min_tile_height()
 	var mesh_parent: Node3D = find_child("Meshes")
 	
-	# Place terrain meshes
+	place_terrain_meshes(mesh_parent)
+	place_cover_mesh(mesh_parent)
+	place_overhang_meshes(mesh_parent)
+	place_decoration_mesh(mesh_parent)
+
+func place_terrain_meshes(mesh_parent: Node3D):
+	var min_height: int = get_min_tile_height()
 	for h: int in range(min_height, self.height):
 		var terrain_mesh: Node3D = self.terrain_type.terrain_mesh.instantiate()
 		mesh_parent.add_child(terrain_mesh)
 		terrain_mesh.position = Vector3(0, h, 0)
-	
-	# Place cover mesh
+
+func place_cover_mesh(mesh_parent: Node3D):
 	var cover_mesh: Node3D = self.terrain_type.cover_mesh.instantiate()
 	mesh_parent.add_child(cover_mesh)
 	cover_mesh.position = Vector3(0, self.height, 0)
-	
-	# Place overhang meshes
+
+func place_overhang_meshes(mesh_parent: Node3D):
 	if self.terrain_type.overhang_mesh == null: return
 	var neighbours: Array[Vector3] = get_neighbour_positions()
 	
@@ -51,6 +56,26 @@ func place_meshes():
 		mesh_parent.add_child(overhang_mesh)
 		overhang_mesh.position = Vector3(0, self.height, 0)
 		overhang_mesh.rotation = Vector3(0, HexagonUtils.edge_angles[i], 0)
+
+func place_decoration_mesh(mesh_parent: Node3D):
+	if not self.terrain_type.decoration_mesh: return
+	if not self.terrain_type.place_decoration_underwater and self.height < 2: return # TODO: parameter for water height
+	
+	var decoration_mesh: Node3D = self.terrain_type.decoration_mesh.instantiate()
+	mesh_parent.add_child(decoration_mesh)
+	
+	# Random position
+	var x_position: float = randf_range(-self.terrain_type.max_position_modifier, self.terrain_type.max_position_modifier)
+	var z_position: float = randf_range(-self.terrain_type.max_position_modifier, self.terrain_type.max_position_modifier)
+	decoration_mesh.position = Vector3(x_position, self.height + HexagonUtils.COVER_HEIGHT, z_position)
+	
+	# Random rotation
+	if self.terrain_type.random_rotation:
+		decoration_mesh.rotation = Vector3(0, randf_range(0, 2 * PI), 0)
+	
+	# Random scale
+	var new_scale = randf_range(1 - self.terrain_type.max_scale_modifier, 1 + self.terrain_type.max_scale_modifier)
+	decoration_mesh.scale = Vector3(new_scale, new_scale, new_scale)
 
 func update_collider():
 	var collider: CollisionPolygon3D = find_child("Collider")

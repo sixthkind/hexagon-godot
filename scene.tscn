@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://br05ybjfb7xtq"]
+[gd_scene load_steps=17 format=3 uid="uid://br05ybjfb7xtq"]
 
 [ext_resource type="Script" path="res://scripts/FreeLockCamera3D.gd" id="1_3bny6"]
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_o10kw"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://n8tedky57mt0" path="res://scenes/hexagon.tscn" id="5_u0dwq"]
 [ext_resource type="Material" uid="uid://bcyp542pqibbn" path="res://materials/water_material.tres" id="8_hs4hb"]
 [ext_resource type="PackedScene" uid="uid://c0v6vgdwu3y6m" path="res://models/highlight.glb" id="8_l371f"]
+[ext_resource type="PackedScene" uid="uid://75l1fnnptl8c" path="res://models/decorations/tree.glb" id="10_43sir"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2c7br"]
 sky_top_color = Color(0.282353, 0.619608, 0.698039, 1)
@@ -41,6 +42,11 @@ dof_blur_amount = 0.05
 [sub_resource type="Resource" id="Resource_vgnlr"]
 script = ExtResource("2_b56jq")
 name = "grass"
+decoration_mesh = ExtResource("10_43sir")
+max_position_modifier = 0.2
+max_scale_modifier = 0.25
+random_rotation = true
+place_decoration_underwater = false
 cover_mesh = ExtResource("2_s0og2")
 overhang_mesh = ExtResource("4_0svjd")
 terrain_mesh = ExtResource("4_lnbnb")
