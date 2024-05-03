@@ -66,7 +66,6 @@ transform = Transform3D(1, 0, 0, 0, 0.923297, 0.384086, 0, -0.384086, 0.923297, 
 script = ExtResource("1_3bny6")
 
 [node name="World" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 script = ExtResource("1_o10kw")
 hexagon_count = 7
 terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr")])
@@ -78,6 +77,6 @@ highlight_instance = ExtResource("8_l371f")
 [node name="Highlight" type="Node3D" parent="World"]
 
 [node name="water2" type="MeshInstance3D" parent="World"]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 5, 0)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 2, 0)
 material_override = ExtResource("8_hs4hb")
 mesh = SubResource("PlaneMesh_3kst5")

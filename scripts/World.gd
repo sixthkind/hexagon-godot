@@ -41,8 +41,7 @@ func generate_hexagons():
 			var hexagon_global_position: Vector2 = HexagonUtils.get_world_position(hexagon_grid_position)
 			var hexagon: Hexagon = hexagon_instance.instantiate().initialise(hexagon_grid_position, terrain_types[0], self)
 			find_child("Hexagons").add_child(hexagon)
-			hexagon.global_position = MathUtils.with_y(hexagon_global_position, 0)
-			
+			hexagon.position = MathUtils.with_y(hexagon_global_position, 0)
 			hexagons[hexagon_grid_position] = hexagon
 
 	# Place meshes
@@ -124,7 +123,7 @@ func update_selection():
 		if i < len(highlighted_hexagon_positions):
 			var highlight_height: float = hexagons[highlighted_hexagon_positions[i]].height + HexagonUtils.COVER_HEIGHT
 			var highlight_position: Vector3 = MathUtils.with_y(HexagonUtils.get_world_position(highlighted_hexagon_positions[i]), highlight_height)
-			highlight_meshes.get_child(i).global_position = highlight_position
+			highlight_meshes.get_child(i).position = highlight_position
 		
 		# Remove mesh
 		if i >= len(highlighted_hexagon_positions):
