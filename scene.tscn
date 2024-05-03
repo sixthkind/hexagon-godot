@@ -12,9 +12,9 @@
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2c7br"]
 sky_top_color = Color(0.282353, 0.619608, 0.698039, 1)
-sky_horizon_color = Color(0.641176, 0.809804, 0.84902, 1)
-ground_bottom_color = Color(0.282353, 0.619608, 0.698039, 1)
-ground_horizon_color = Color(0.641176, 0.809804, 0.84902, 1)
+sky_horizon_color = Color(0.415686, 0.705882, 0.768627, 1)
+ground_bottom_color = Color(0.415686, 0.705882, 0.768627, 1)
+ground_horizon_color = Color(0.415686, 0.705882, 0.768627, 1)
 
 [sub_resource type="Sky" id="Sky_p5ha5"]
 sky_material = SubResource("ProceduralSkyMaterial_2c7br")
@@ -77,6 +77,6 @@ highlight_instance = ExtResource("8_l371f")
 [node name="Highlight" type="Node3D" parent="World"]
 
 [node name="water2" type="MeshInstance3D" parent="World"]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 2, 0)
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 2, 0)
 material_override = ExtResource("8_hs4hb")
 mesh = SubResource("PlaneMesh_3kst5")
