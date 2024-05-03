@@ -2,6 +2,7 @@ shader_type spatial;
 
 uniform vec3 shallow_colour : source_color;
 uniform vec3 deep_colour : source_color;
+uniform vec3 foam_colour: source_color;
 uniform float max_depth: hint_range(0.1, 10) = 1;
 uniform float absorbance: hint_range(0.0, 1.0, 0.1) = 0.7;
 uniform float fresnel_amount: hint_range(0.0, 10.0, 0.1) = 5;
@@ -57,13 +58,13 @@ void fragment() {
 	// Mix them all together
 	vec3 color_out = mix(deep_colour, shallow_colour, depth_fade_blend) + fresnel_strength * fresnel(fresnel_amount, NORMAL, VIEW);
 	
-	// Add white foam
+	// Add foam
 	if (vertical_depth < foam_depth_cutoff) {
-		color_out = vec3(1);
+		color_out = foam_colour;
 	}
 	
 	ALBEDO = color_out;
 	ALPHA = alpha_blend;
-	ROUGHNESS = 0.02;
+	ROUGHNESS = 1.0;
 	METALLIC = 0.0;
 }

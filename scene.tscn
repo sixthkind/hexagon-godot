@@ -22,12 +22,21 @@ sky_material = SubResource("ProceduralSkyMaterial_2c7br")
 [sub_resource type="Environment" id="Environment_fqxiy"]
 background_mode = 2
 sky = SubResource("Sky_p5ha5")
+ambient_light_source = 3
+reflected_light_source = 2
 tonemap_mode = 2
 ssao_enabled = true
 sdfgi_enabled = true
-glow_enabled = true
+glow_intensity = 0.4
+adjustment_brightness = 0.92
+adjustment_saturation = 0.76
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8t0jw"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 20.0
+dof_blur_far_transition = 10.0
+dof_blur_near_distance = 1579.76
+dof_blur_amount = 0.05
 
 [sub_resource type="Resource" id="Resource_vgnlr"]
 script = ExtResource("2_b56jq")
@@ -47,8 +56,9 @@ environment = SubResource("Environment_fqxiy")
 camera_attributes = SubResource("CameraAttributesPractical_8t0jw")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 7.05588, 0)
 light_color = Color(1, 1, 0.827451, 1)
+light_energy = 1.462
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
