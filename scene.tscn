@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://br05ybjfb7xtq"]
+[gd_scene load_steps=29 format=3 uid="uid://br05ybjfb7xtq"]
 
 [ext_resource type="Script" path="res://scripts/FreeLockCamera3D.gd" id="1_3bny6"]
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_o10kw"]
@@ -7,11 +7,16 @@
 [ext_resource type="PackedScene" uid="uid://dxmtvw53ncot7" path="res://models/terrain/grass_overhang.glb" id="4_0svjd"]
 [ext_resource type="PackedScene" uid="uid://b5qhdi4j2lfj4" path="res://models/terrain/dirt_terrain.glb" id="4_lnbnb"]
 [ext_resource type="PackedScene" uid="uid://n8tedky57mt0" path="res://scenes/hexagon.tscn" id="5_u0dwq"]
+[ext_resource type="PackedScene" uid="uid://b3okb8iouifxh" path="res://models/terrain/forest_cover.glb" id="7_sd3f2"]
 [ext_resource type="PackedScene" uid="uid://p5vps6iuy5m4" path="res://models/terrain/sand_cover.glb" id="8_6jxas"]
 [ext_resource type="Material" uid="uid://bcyp542pqibbn" path="res://materials/water_material.tres" id="8_hs4hb"]
 [ext_resource type="PackedScene" uid="uid://c0v6vgdwu3y6m" path="res://models/highlight.glb" id="8_l371f"]
 [ext_resource type="PackedScene" uid="uid://b8aeun0qo1557" path="res://models/terrain/sand_overhang.glb" id="9_wmoyh"]
+[ext_resource type="Script" path="res://scripts/Decoration.gd" id="9_xjuar"]
+[ext_resource type="PackedScene" uid="uid://cagfmc8dx3jnc" path="res://models/terrain/forest_overhang.glb" id="10_4fihw"]
 [ext_resource type="PackedScene" uid="uid://75l1fnnptl8c" path="res://models/decorations/tree.glb" id="10_43sir"]
+[ext_resource type="PackedScene" uid="uid://2yanaeh1l6xi" path="res://models/decorations/rock.glb" id="10_x4jig"]
+[ext_resource type="PackedScene" uid="uid://n1ve5vdccxbx" path="res://models/decorations/seashell.glb" id="13_vpyjf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2c7br"]
 sky_top_color = Color(0.282353, 0.619608, 0.698039, 1)
@@ -44,22 +49,50 @@ dof_blur_amount = 0.05
 [sub_resource type="Resource" id="Resource_vgnlr"]
 script = ExtResource("2_b56jq")
 name = "grass"
-decoration_mesh = ExtResource("10_43sir")
-max_position_modifier = 0.2
-max_scale_modifier = 0.25
-random_rotation = true
-place_decoration_underwater = false
+decorations = Array[ExtResource("9_xjuar")]([])
 cover_mesh = ExtResource("2_s0og2")
 overhang_mesh = ExtResource("4_0svjd")
 terrain_mesh = ExtResource("4_lnbnb")
 
+[sub_resource type="Resource" id="Resource_hiny4"]
+script = ExtResource("9_xjuar")
+mesh = ExtResource("10_43sir")
+weight = 5
+max_position_modifier = 0.2
+max_scale_modifier = 0.25
+random_rotation = true
+underwater_strategy = 1
+
+[sub_resource type="Resource" id="Resource_pgdyj"]
+script = ExtResource("9_xjuar")
+mesh = ExtResource("10_x4jig")
+weight = 1
+max_position_modifier = 0.3
+max_scale_modifier = 0.25
+random_rotation = true
+underwater_strategy = 0
+
+[sub_resource type="Resource" id="Resource_ilxcr"]
+script = ExtResource("2_b56jq")
+name = "forest"
+decorations = Array[ExtResource("9_xjuar")]([SubResource("Resource_hiny4"), SubResource("Resource_pgdyj")])
+cover_mesh = ExtResource("7_sd3f2")
+overhang_mesh = ExtResource("10_4fihw")
+terrain_mesh = ExtResource("4_lnbnb")
+
+[sub_resource type="Resource" id="Resource_ul3nv"]
+script = ExtResource("9_xjuar")
+mesh = ExtResource("13_vpyjf")
+weight = 1
+max_position_modifier = 0.3
+max_scale_modifier = 0.25
+random_rotation = true
+underwater_strategy = 2
+
 [sub_resource type="Resource" id="Resource_w0bmo"]
 script = ExtResource("2_b56jq")
 name = "sand"
-max_position_modifier = 0.1
-max_scale_modifier = 0.2
-random_rotation = true
-place_decoration_underwater = false
+decorations = Array[ExtResource("9_xjuar")]([SubResource("Resource_ul3nv")])
 cover_mesh = ExtResource("8_6jxas")
 overhang_mesh = ExtResource("9_wmoyh")
 terrain_mesh = ExtResource("4_lnbnb")
@@ -87,7 +120,7 @@ script = ExtResource("1_3bny6")
 [node name="World" type="Node3D" parent="."]
 script = ExtResource("1_o10kw")
 hexagon_count = 7
-terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr"), SubResource("Resource_w0bmo")])
+terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr"), SubResource("Resource_ilxcr"), SubResource("Resource_w0bmo")])
 hexagon_instance = ExtResource("5_u0dwq")
 highlight_instance = ExtResource("8_l371f")
 

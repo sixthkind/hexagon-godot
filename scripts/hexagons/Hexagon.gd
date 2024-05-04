@@ -13,7 +13,7 @@ func initialise(grid_position: Vector3, terrain_type: TerrainType, has_decoratio
 	self.terrain_type = terrain_type
 	self.has_decoration = has_decoration
 	self.world = world
-	self.height = 0 if grid_position.length() > 3 else randi_range(0, 5)
+	self.height = randi_range(0, 5)
 	return self
 
 func update_meshes():
@@ -60,24 +60,26 @@ func place_overhang_meshes(mesh_parent: Node3D):
 		overhang_mesh.rotation = Vector3(0, HexagonUtils.edge_angles[i], 0)
 
 func place_decoration_mesh(mesh_parent: Node3D):
-	if not self.terrain_type.decoration_mesh: return
+	if not self.terrain_type.decorations: return
 	if not self.has_decoration: return
-	if not self.terrain_type.place_decoration_underwater and self.height < 2: return # TODO: parameter for water height
 	
-	var decoration_mesh: Node3D = self.terrain_type.decoration_mesh.instantiate()
+	var decoration: Decoration = self.terrain_type.get_decoration(self.height >= 2) # TODO: parameter for water height
+	if not decoration: return
+	
+	var decoration_mesh: Node3D = decoration.mesh.instantiate()
 	mesh_parent.add_child(decoration_mesh)
 	
 	# Random position
-	var x_position: float = randf_range(-self.terrain_type.max_position_modifier, self.terrain_type.max_position_modifier)
-	var z_position: float = randf_range(-self.terrain_type.max_position_modifier, self.terrain_type.max_position_modifier)
+	var x_position: float = randf_range(-decoration.max_position_modifier, decoration.max_position_modifier)
+	var z_position: float = randf_range(-decoration.max_position_modifier, decoration.max_position_modifier)
 	decoration_mesh.position = Vector3(x_position, self.height + HexagonUtils.COVER_HEIGHT, z_position)
 	
 	# Random rotation
-	if self.terrain_type.random_rotation:
+	if decoration.random_rotation:
 		decoration_mesh.rotation = Vector3(0, randf_range(0, 2 * PI), 0)
 	
 	# Random scale
-	var new_scale = randf_range(1 - self.terrain_type.max_scale_modifier, 1 + self.terrain_type.max_scale_modifier)
+	var new_scale = randf_range(1 - decoration.max_scale_modifier, 1 + decoration.max_scale_modifier)
 	decoration_mesh.scale = Vector3(new_scale, new_scale, new_scale)
 
 func update_collider():
@@ -98,6 +100,8 @@ func set_terrain_type(new_terrain_type: TerrainType):
 	update_meshes()
 
 func set_decoration(decoration: bool):
+	if len(self.terrain_type.decorations) == 0: return
+	
 	self.has_decoration = decoration
 	update_meshes()
 
