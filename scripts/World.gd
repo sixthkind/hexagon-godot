@@ -6,6 +6,7 @@ class_name World extends Node3D
 
 @export_category("Terrain")
 @export var terrain_types: Array[TerrainType]
+@export_range(0, 1) var original_decoration_chance: float = 0.3
 
 @export_category("Edit mode")
 @export_range(1, 5) var max_edit_size = 3
@@ -18,7 +19,7 @@ var hexagons: Dictionary = {} # Key = cube position
 var center_highlighted_hexagon_position: Vector3 = Vector3.INF
 var highlighted_hexagon_positions: Array[Vector3] = []
 
-enum Mode { View, Terrain, Decoration }
+enum Mode { View, Terrain, TerrainType, Decoration }
 var mode: Mode = Mode.Terrain
 var edit_size: int = 1
 var selected_terrain_type: TerrainType
@@ -45,7 +46,7 @@ func generate_hexagons():
 			
 			var hexagon_grid_position: Vector3 = Vector3(q, r, -q-r)
 			var hexagon_global_position: Vector2 = HexagonUtils.get_world_position(hexagon_grid_position)
-			var hexagon: Hexagon = hexagon_instance.instantiate().initialise(hexagon_grid_position, terrain_types[0], self)
+			var hexagon: Hexagon = hexagon_instance.instantiate().initialise(hexagon_grid_position, terrain_types[0], randf() < original_decoration_chance, self)
 			find_child("Hexagons").add_child(hexagon)
 			hexagon.position = MathUtils.with_y(hexagon_global_position, 0)
 			hexagons[hexagon_grid_position] = hexagon
@@ -84,11 +85,13 @@ func interact_terrain(event: InputEventMouseButton):
 			level_terrain()
 		else:
 			raise_terrain(-1 if event.shift_pressed else 1)
-	elif mode == Mode.Decoration:
+	elif mode == Mode.TerrainType:
 		if event.ctrl_pressed:
-			set_decoration()
+			set_terrain_type()
 		else:
-			change_decoration(-1 if event.shift_pressed else 1)
+			change_terrain_type(-1 if event.shift_pressed else 1)
+	elif mode == Mode.Decoration:
+		change_decoration(!event.shift_pressed)
 
 func level_terrain():
 	var hexagons_to_update: Dictionary = {} # Used as set
@@ -120,15 +123,19 @@ func raise_terrain(force: int):
 			if update_position in hexagons:
 				hexagons[update_position].update_meshes()
 
-func set_decoration():
+func set_terrain_type():
 	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
 		hexagons[highlighted_hexagon_position].set_terrain_type(selected_terrain_type)
 
-func change_decoration(index_change: int):
+func change_terrain_type(index_change: int):
 	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
 		var new_terrain_type_index: int = wrap(terrain_types.find(hexagons[highlighted_hexagon_position].terrain_type) + index_change, 0, len(terrain_types))
 		hexagons[highlighted_hexagon_position].set_terrain_type(terrain_types[new_terrain_type_index])
 
+func change_decoration(enable_decoration: bool):
+	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+		hexagons[highlighted_hexagon_position].set_decoration(enable_decoration)
+	
 func select_terrain():
 	if mode == Mode.View: return
 	
@@ -143,7 +150,7 @@ func select_terrain():
 		
 		if mode == Mode.Terrain:
 			selected_height = highlighted_hexagon.height
-		elif mode == Mode.Decoration:
+		elif mode == Mode.TerrainType:
 			selected_terrain_type = highlighted_hexagon.terrain_type
 
 func _process(_delta):

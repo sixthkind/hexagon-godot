@@ -4,12 +4,14 @@ class_name Hexagon extends Node3D
 var grid_position: Vector3 # q, r, s
 var height: int = 0 # amount of tiles high
 var terrain_type: TerrainType
+var has_decoration: bool
 
 var world: World
 
-func initialise(grid_position: Vector3, terrain_type: TerrainType, world: World) -> Hexagon:
+func initialise(grid_position: Vector3, terrain_type: TerrainType, has_decoration: bool, world: World) -> Hexagon:
 	self.grid_position = grid_position
 	self.terrain_type = terrain_type
+	self.has_decoration = has_decoration
 	self.world = world
 	self.height = 0 if grid_position.length() > 3 else randi_range(0, 5)
 	return self
@@ -59,6 +61,7 @@ func place_overhang_meshes(mesh_parent: Node3D):
 
 func place_decoration_mesh(mesh_parent: Node3D):
 	if not self.terrain_type.decoration_mesh: return
+	if not self.has_decoration: return
 	if not self.terrain_type.place_decoration_underwater and self.height < 2: return # TODO: parameter for water height
 	
 	var decoration_mesh: Node3D = self.terrain_type.decoration_mesh.instantiate()
@@ -92,6 +95,10 @@ func update_height(change: int):
 
 func set_terrain_type(new_terrain_type: TerrainType):
 	self.terrain_type = new_terrain_type
+	update_meshes()
+
+func set_decoration(decoration: bool):
+	self.has_decoration = decoration
 	update_meshes()
 
 func get_min_tile_height() -> int:
