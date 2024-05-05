@@ -76,8 +76,10 @@ func keyboard_input(event: InputEventKey):
 		self.edit_size = max(self.edit_size - 1, 0)
 	elif event.keycode == KEY_LEFT:
 		self.mode = wrap(self.mode - 1, 0, len(Mode.values()))
+		Signals.mode_update.emit(self.mode)
 	elif event.keycode == KEY_RIGHT:
 		self.mode = wrap(self.mode + 1, 0, len(Mode.values()))
+		Signals.mode_update.emit(self.mode)
 
 func interact_terrain(event: InputEventMouseButton):
 	if mode == Mode.Terrain:

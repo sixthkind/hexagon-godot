@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://br05ybjfb7xtq"]
+[gd_scene load_steps=30 format=3 uid="uid://br05ybjfb7xtq"]
 
 [ext_resource type="Script" path="res://scripts/FreeLockCamera3D.gd" id="1_3bny6"]
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_o10kw"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://75l1fnnptl8c" path="res://models/decorations/tree.glb" id="10_43sir"]
 [ext_resource type="PackedScene" uid="uid://2yanaeh1l6xi" path="res://models/decorations/rock.glb" id="10_x4jig"]
 [ext_resource type="PackedScene" uid="uid://n1ve5vdccxbx" path="res://models/decorations/seashell.glb" id="13_vpyjf"]
+[ext_resource type="Script" path="res://scripts/ModeLabel.gd" id="18_p6vya"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2c7br"]
 sky_top_color = Color(0.282353, 0.619608, 0.698039, 1)
@@ -132,3 +133,14 @@ highlight_instance = ExtResource("8_l371f")
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 1, 0)
 material_override = ExtResource("8_hs4hb")
 mesh = SubResource("PlaneMesh_3kst5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="ModeLabel" type="Label" parent="MarginContainer"]
+layout_mode = 2
+text = "Mode: [MODE]"
+script = ExtResource("18_p6vya")
