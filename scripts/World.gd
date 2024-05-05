@@ -4,6 +4,11 @@ class_name World extends Node3D
 @export_range(0, 10) var hexagon_count: int = 3 # Radius of hexagons around center
 @export_range(1, 20) var max_hexagon_height: int = 10
 
+@export_category("Default terrain")
+@export_range(0.0001, 0.01) var noise_frequency: float = 0.001
+@export var height_mask: CompressedTexture2D
+@export var terrain_type_criteria: Array[TerrainTypeCriteria] = []
+
 @export_category("Terrain")
 @export var terrain_types: Array[TerrainType]
 @export_range(0, 1) var original_decoration_chance: float = 0.3
@@ -34,11 +39,29 @@ func verify_inputs() -> bool:
 		print("Invalid configuration: must have atleast 1 terrain type")
 		return false
 	
+	if height_mask.get_width() != 512 or height_mask.get_height() != 512:
+		print("Height mask texture must be 512x512 pixels")
+		return false
+	
+	for criteria: TerrainTypeCriteria in terrain_type_criteria:
+		if criteria.terrain_type_index >= len(terrain_types):
+			print("Invalid terrain type index in terrain type criteria")
+			return false
+	
 	selected_terrain_type = terrain_types[0]
 	
 	return true
 
 func generate_hexagons():
+	var texture: NoiseTexture2D = NoiseTexture2D.new()
+	var noise: FastNoiseLite = FastNoiseLite.new()
+	noise.set_seed(randi())
+	noise.set_frequency(noise_frequency)
+	texture.noise = noise
+	await texture.changed
+	var noise_image: Image = texture.get_image()
+	var mask_image: Image = height_mask.get_image()
+	
 	# Generate honeycomb of hexagons
 	for q: int in range(-hexagon_count, hexagon_count + 1):
 		for r: int in range(-hexagon_count, hexagon_count + 1):
@@ -46,7 +69,21 @@ func generate_hexagons():
 			
 			var hexagon_grid_position: Vector3 = Vector3(q, r, -q-r)
 			var hexagon_global_position: Vector2 = HexagonUtils.get_world_position(hexagon_grid_position)
-			var hexagon: Hexagon = hexagon_instance.instantiate().initialise(hexagon_grid_position, terrain_types[0], randf() < original_decoration_chance, self)
+			
+			# Sample noise image to determine heighgt
+			var image_x: int = roundi((q + hexagon_count) / (2.0 * hexagon_count + 1) * noise_image.get_width())
+			var image_y: int = roundi((r + hexagon_count) / (2.0 * hexagon_count + 1) * noise_image.get_height())
+			var height: int = roundi(noise_image.get_pixel(image_x, image_y).r * mask_image.get_pixel(image_x, image_y).r * max_hexagon_height)
+			
+			# Choose terrain type depending on critiera
+			var terrain_type: TerrainType = terrain_types[0]
+			
+			for criteria: TerrainTypeCriteria in terrain_type_criteria:
+				if height >= criteria.min_height:
+					terrain_type = terrain_types[criteria.terrain_type_index]
+			
+			var decoration: bool = randf() < original_decoration_chance
+			var hexagon: Hexagon = hexagon_instance.instantiate().initialise(hexagon_grid_position, terrain_type, decoration, height, self)
 			find_child("Hexagons").add_child(hexagon)
 			hexagon.position = MathUtils.with_y(hexagon_global_position, 0)
 			hexagons[hexagon_grid_position] = hexagon

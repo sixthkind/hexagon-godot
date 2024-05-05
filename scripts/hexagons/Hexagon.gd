@@ -8,12 +8,12 @@ var has_decoration: bool
 
 var world: World
 
-func initialise(grid_position: Vector3, terrain_type: TerrainType, has_decoration: bool, world: World) -> Hexagon:
+func initialise(grid_position: Vector3, terrain_type: TerrainType, has_decoration: bool, height: int, world: World) -> Hexagon:
 	self.grid_position = grid_position
 	self.terrain_type = terrain_type
 	self.has_decoration = has_decoration
 	self.world = world
-	self.height = randi_range(0, 5)
+	self.height = height
 	return self
 
 func update_meshes():

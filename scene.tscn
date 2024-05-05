@@ -1,11 +1,13 @@
-[gd_scene load_steps=30 format=3 uid="uid://br05ybjfb7xtq"]
+[gd_scene load_steps=35 format=3 uid="uid://br05ybjfb7xtq"]
 
 [ext_resource type="Script" path="res://scripts/FreeLockCamera3D.gd" id="1_3bny6"]
 [ext_resource type="Script" path="res://scripts/World.gd" id="1_o10kw"]
 [ext_resource type="Script" path="res://scripts/TerrainType.gd" id="2_b56jq"]
 [ext_resource type="PackedScene" uid="uid://bkdnxf77bq56r" path="res://models/terrain/grass_cover.glb" id="2_s0og2"]
+[ext_resource type="Texture2D" uid="uid://cle3cmlg2jrm7" path="res://textures/height_falloff.png" id="3_itcv2"]
 [ext_resource type="PackedScene" uid="uid://dxmtvw53ncot7" path="res://models/terrain/grass_overhang.glb" id="4_0svjd"]
 [ext_resource type="PackedScene" uid="uid://b5qhdi4j2lfj4" path="res://models/terrain/dirt_terrain.glb" id="4_lnbnb"]
+[ext_resource type="Script" path="res://scripts/TerrainTypeCriteria.gd" id="4_y6omn"]
 [ext_resource type="PackedScene" uid="uid://n8tedky57mt0" path="res://scenes/hexagon.tscn" id="5_u0dwq"]
 [ext_resource type="PackedScene" uid="uid://b3okb8iouifxh" path="res://models/terrain/forest_cover.glb" id="7_sd3f2"]
 [ext_resource type="PackedScene" uid="uid://p5vps6iuy5m4" path="res://models/terrain/sand_cover.glb" id="8_6jxas"]
@@ -46,6 +48,21 @@ dof_blur_far_distance = 20.0
 dof_blur_far_transition = 10.0
 dof_blur_near_distance = 1579.76
 dof_blur_amount = 0.05
+
+[sub_resource type="Resource" id="Resource_iqeip"]
+script = ExtResource("4_y6omn")
+min_height = 0
+terrain_type_index = 2
+
+[sub_resource type="Resource" id="Resource_k5c5d"]
+script = ExtResource("4_y6omn")
+min_height = 2
+terrain_type_index = 0
+
+[sub_resource type="Resource" id="Resource_0rgap"]
+script = ExtResource("4_y6omn")
+min_height = 4
+terrain_type_index = 1
 
 [sub_resource type="Resource" id="Resource_vgnlr"]
 script = ExtResource("2_b56jq")
@@ -121,6 +138,8 @@ script = ExtResource("1_3bny6")
 [node name="World" type="Node3D" parent="."]
 script = ExtResource("1_o10kw")
 hexagon_count = 7
+height_mask = ExtResource("3_itcv2")
+terrain_type_criteria = Array[ExtResource("4_y6omn")]([SubResource("Resource_iqeip"), SubResource("Resource_k5c5d"), SubResource("Resource_0rgap")])
 terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr"), SubResource("Resource_ilxcr"), SubResource("Resource_w0bmo")])
 hexagon_instance = ExtResource("5_u0dwq")
 highlight_instance = ExtResource("8_l371f")
