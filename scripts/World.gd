@@ -1,7 +1,7 @@
 class_name World extends Node3D
 
 @export_category("World Settings")
-@export_range(0, 10) var hexagon_count: int = 3 # Radius of hexagons around center
+@export_range(0, 50) var hexagon_count: int = 3 # Radius of hexagons around center
 @export_range(1, 20) var max_hexagon_height: int = 10
 
 @export_category("Default terrain")
