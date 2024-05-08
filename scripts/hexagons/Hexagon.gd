@@ -1,14 +1,14 @@
 # A hexagon in cube coordinates
 class_name Hexagon extends Node3D
 
-var grid_position: Vector3 # q, r, s
+var grid_position: Vector3i # q, r, s
 var height: int = 0 # amount of tiles high
 var terrain_type: TerrainType
 var has_decoration: bool
 
 var world: World
 
-func initialise(grid_position: Vector3, terrain_type: TerrainType, has_decoration: bool, height: int, world: World) -> Hexagon:
+func initialise(grid_position: Vector3i, terrain_type: TerrainType, has_decoration: bool, height: int, world: World) -> Hexagon:
 	self.grid_position = grid_position
 	self.terrain_type = terrain_type
 	self.has_decoration = has_decoration
@@ -38,16 +38,16 @@ func place_terrain_meshes(mesh_parent: Node3D):
 	for h: int in range(min_height, self.height):
 		var terrain_mesh: Node3D = self.terrain_type.terrain_mesh.instantiate()
 		mesh_parent.add_child(terrain_mesh)
-		terrain_mesh.position = Vector3(0, h, 0)
+		terrain_mesh.position = Vector3i(0, h, 0)
 
 func place_cover_mesh(mesh_parent: Node3D):
 	var cover_mesh: Node3D = self.terrain_type.cover_mesh.instantiate()
 	mesh_parent.add_child(cover_mesh)
-	cover_mesh.position = Vector3(0, self.height, 0)
+	cover_mesh.position = Vector3i(0, self.height, 0)
 
 func place_overhang_meshes(mesh_parent: Node3D):
 	if self.terrain_type.overhang_mesh == null: return
-	var neighbours: Array[Vector3] = get_neighbour_positions()
+	var neighbours: Array[Vector3i] = get_neighbour_positions()
 	
 	for i: int in range(6):
 		# Only create overhangs when neighbour is further down
@@ -56,7 +56,7 @@ func place_overhang_meshes(mesh_parent: Node3D):
 		
 		var overhang_mesh: Node3D = self.terrain_type.overhang_mesh.instantiate()
 		mesh_parent.add_child(overhang_mesh)
-		overhang_mesh.position = Vector3(0, self.height, 0)
+		overhang_mesh.position = Vector3i(0, self.height, 0)
 		overhang_mesh.rotation = Vector3(0, HexagonUtils.edge_angles[i], 0)
 
 func place_decoration_mesh(mesh_parent: Node3D):
@@ -116,10 +116,10 @@ func get_min_tile_height() -> int:
 	
 	return min_height
 
-func get_neighbour_positions() -> Array[Vector3]:
-	var neighbours: Array[Vector3] = []
+func get_neighbour_positions() -> Array[Vector3i]:
+	var neighbours: Array[Vector3i] = []
 	neighbours.assign(HexagonUtils.neighbour_offsets.map(func(x): return grid_position + x))
 	return neighbours
 	
-func get_neighbour_position(index: int) -> Vector3:
+func get_neighbour_position(index: int) -> Vector3i:
 	return grid_position + HexagonUtils.get_neighbour_offset(index)

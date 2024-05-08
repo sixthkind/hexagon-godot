@@ -5,9 +5,9 @@ static var _size: float = 1
 static var COVER_HEIGHT: float = 0.3
 
 # Neighbours in counter clockwise order
-static var neighbour_offsets: Array[Vector3] = [
-	Vector3(1, -1, 0), Vector3(0, -1, 1), Vector3(-1, 0, 1),
-	Vector3(-1, 1, 0), Vector3(0, 1, -1), Vector3(1, 0, -1),
+static var neighbour_offsets: Array[Vector3i] = [
+	Vector3i(1, -1, 0), Vector3i(0, -1, 1), Vector3i(-1, 0, 1),
+	Vector3i(-1, 1, 0), Vector3i(0, 1, -1), Vector3i(1, 0, -1),
 ]
 
 # Corners in counter clockwise order
@@ -48,14 +48,14 @@ static func get_perimeter() -> float:
 
 ##
 
-static func get_neighbour_offset(index: int) -> Vector3:
+static func get_neighbour_offset(index: int) -> Vector3i:
 	return HexagonUtils.neighbour_offsets[index % len(HexagonUtils.neighbour_offsets)]
 
-static func get_corner_offset(index: int) -> Vector3:
+static func get_corner_offset(index: int) -> Vector3i:
 	return HexagonUtils.corner_offsets[index % len(HexagonUtils.corner_offsets)]
 
 # Round a fractal position, source: https://www.redblobgames.com/grids/hexagons/#rounding
-static func round_hexagon(position: Vector3) -> Vector3:
+static func round_hexagon(position: Vector3) -> Vector3i:
 	# Round coordinates
 	var q: float = round(position.x)
 	var r: float = round(position.y)
@@ -73,7 +73,7 @@ static func round_hexagon(position: Vector3) -> Vector3:
 	else:
 		s = -q-r
 
-	return Vector3(q, r, s)
+	return Vector3i(q, r, s)
 
 # Get grid position from world position
 static func get_grid_position(world_position: Vector2, round: bool = true) -> Vector3:

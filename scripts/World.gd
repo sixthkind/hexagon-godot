@@ -21,8 +21,8 @@ class_name World extends Node3D
 @export var highlight_instance: PackedScene
 
 var hexagons: Dictionary = {} # Key = cube position
-var center_highlighted_hexagon_position: Vector3 = Vector3.INF
-var highlighted_hexagon_positions: Array[Vector3] = []
+var center_highlighted_hexagon_position: Vector3i = Vector3.INF
+var highlighted_hexagon_positions: Array[Vector3i] = []
 
 enum Mode { View, Terrain, TerrainType, Decoration }
 var mode: Mode = Mode.Terrain
@@ -67,7 +67,7 @@ func generate_hexagons():
 		for r: int in range(-hexagon_count, hexagon_count + 1):
 			if abs(-q-r) > hexagon_count: continue
 			
-			var hexagon_grid_position: Vector3 = Vector3(q, r, -q-r)
+			var hexagon_grid_position: Vector3i = Vector3i(q, r, -q-r)
 			var hexagon_global_position: Vector2 = HexagonUtils.get_world_position(hexagon_grid_position)
 			
 			# Sample noise image to determine heighgt
@@ -135,11 +135,11 @@ func interact_terrain(event: InputEventMouseButton):
 func level_terrain():
 	var hexagons_to_update: Dictionary = {} # Used as set
 	
-	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+	for highlighted_hexagon_position: Vector3i in highlighted_hexagon_positions:
 		hexagons[highlighted_hexagon_position].set_height(selected_height, 1)
 		hexagons_to_update[highlighted_hexagon_position] = true
 		
-		for neighbour: Vector3 in hexagons[highlighted_hexagon_position].get_neighbour_positions():
+		for neighbour: Vector3i in hexagons[highlighted_hexagon_position].get_neighbour_positions():
 			hexagons_to_update[neighbour] = true
 
 	for update_position in hexagons_to_update.keys():
@@ -149,13 +149,13 @@ func level_terrain():
 func raise_terrain(force: int):
 	var hexagons_to_update: Dictionary = {} # Used as set
 	
-	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+	for highlighted_hexagon_position: Vector3i in highlighted_hexagon_positions:
 		if (hexagons[highlighted_hexagon_position].height <= hexagons[center_highlighted_hexagon_position].height and force > 0) or \
 			(hexagons[highlighted_hexagon_position].height >= hexagons[center_highlighted_hexagon_position].height and force < 0):
 				hexagons[highlighted_hexagon_position].update_height(force)
 				hexagons_to_update[highlighted_hexagon_position] = true
 				
-				for neighbour: Vector3 in hexagons[highlighted_hexagon_position].get_neighbour_positions():
+				for neighbour: Vector3i in hexagons[highlighted_hexagon_position].get_neighbour_positions():
 					hexagons_to_update[neighbour] = true
 
 		for update_position in hexagons_to_update.keys():
@@ -163,16 +163,16 @@ func raise_terrain(force: int):
 				hexagons[update_position].update_meshes()
 
 func set_terrain_type():
-	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+	for highlighted_hexagon_position: Vector3i in highlighted_hexagon_positions:
 		hexagons[highlighted_hexagon_position].set_terrain_type(selected_terrain_type)
 
 func change_terrain_type(index_change: int):
-	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+	for highlighted_hexagon_position: Vector3i in highlighted_hexagon_positions:
 		var new_terrain_type_index: int = wrap(terrain_types.find(hexagons[highlighted_hexagon_position].terrain_type) + index_change, 0, len(terrain_types))
 		hexagons[highlighted_hexagon_position].set_terrain_type(terrain_types[new_terrain_type_index])
 
 func change_decoration(enable_decoration: bool):
-	for highlighted_hexagon_position: Vector3 in highlighted_hexagon_positions:
+	for highlighted_hexagon_position: Vector3i in highlighted_hexagon_positions:
 		hexagons[highlighted_hexagon_position].set_decoration(enable_decoration)
 	
 func select_terrain():
@@ -210,7 +210,7 @@ func update_highlight():
 		for q: int in range(center_highlighted_hexagon_position.x - edit_size, center_highlighted_hexagon_position.x + edit_size + 1):
 			for r: int in range(center_highlighted_hexagon_position.y - edit_size, center_highlighted_hexagon_position.y + edit_size + 1):
 				for s: int in range(center_highlighted_hexagon_position.z - edit_size, center_highlighted_hexagon_position.z + edit_size + 1):
-					var highlight_position: Vector3 = Vector3(q, r, s)
+					var highlight_position: Vector3i = Vector3i(q, r, s)
 					if highlight_position in hexagons:
 						highlighted_hexagon_positions.push_back(highlight_position)
 	else:
