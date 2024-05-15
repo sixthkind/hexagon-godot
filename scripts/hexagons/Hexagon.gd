@@ -31,6 +31,7 @@ func place_meshes():
 	place_terrain_meshes(mesh_parent)
 	place_cover_mesh(mesh_parent)
 	place_overhang_meshes(mesh_parent)
+	place_water_mesh(mesh_parent)
 	place_decoration_mesh(mesh_parent)
 
 func place_terrain_meshes(mesh_parent: Node3D):
@@ -59,11 +60,18 @@ func place_overhang_meshes(mesh_parent: Node3D):
 		overhang_mesh.position = Vector3i(0, self.height, 0)
 		overhang_mesh.rotation = Vector3(0, HexagonUtils.edge_angles[i], 0)
 
+func place_water_mesh(mesh_parent: Node3D):
+	if self.height > world.water_height: return
+	
+	var water_mesh: Node3D = world.water_instance.instantiate()
+	mesh_parent.add_child(water_mesh)
+	water_mesh.position = Vector3(0, world.water_height, 0)
+
 func place_decoration_mesh(mesh_parent: Node3D):
 	if not self.terrain_type.decorations: return
 	if not self.has_decoration: return
 	
-	var decoration: Decoration = self.terrain_type.get_decoration(self.height >= 2) # TODO: parameter for water height
+	var decoration: Decoration = self.terrain_type.get_decoration(self.height >= world.water_height)
 	if not decoration: return
 	
 	var decoration_mesh: Node3D = decoration.mesh.instantiate()
