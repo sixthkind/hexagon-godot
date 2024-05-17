@@ -74,10 +74,12 @@ func generate_hexagons():
 			var hexagon_global_position: Vector2 = HexagonUtils.get_world_position(hexagon_grid_position)
 			
 			# Sample noise image to determine heighgt
-			var image_x: int = roundi((q + hexagon_count) / (2.0 * hexagon_count + 1) * noise_image.get_width())
-			var image_y: int = roundi((r + hexagon_count) / (2.0 * hexagon_count + 1) * noise_image.get_height())
+			var x_percentage: float = ((hexagon_global_position.x / (HexagonUtils.get_width() * (hexagon_count + 0.5))) + 1.0) / 2.0
+			var y_percentage: float = ((hexagon_global_position.y / (HexagonUtils.get_width() * (hexagon_count + 0.5))) + 1.0) / 2.0
+			var image_x: int = roundi(x_percentage * noise_image.get_width())
+			var image_y: int = roundi(y_percentage * noise_image.get_height())
 			var height: int = roundi(noise_image.get_pixel(image_x, image_y).r * mask_image.get_pixel(image_x, image_y).r * max_hexagon_height)
-			
+
 			# Choose terrain type depending on critiera
 			var terrain_type: TerrainType = terrain_types[0]
 			
