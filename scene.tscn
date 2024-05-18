@@ -148,36 +148,6 @@ highlight_instance = ExtResource("8_l371f")
 
 [node name="Highlight" type="Node3D" parent="World"]
 
-[node name="World" type="Node3D" parent="World"]
-script = ExtResource("1_o10kw")
-hexagon_count = 30
-height_mask = ExtResource("3_itcv2")
-terrain_type_criteria = Array[ExtResource("4_y6omn")]([SubResource("Resource_iqeip"), SubResource("Resource_k5c5d"), SubResource("Resource_0rgap")])
-terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr"), SubResource("Resource_ilxcr"), SubResource("Resource_w0bmo")])
-hexagon_instance = ExtResource("5_u0dwq")
-water_instance = ExtResource("21_1hr1f")
-water_material = ExtResource("8_hs4hb")
-highlight_instance = ExtResource("8_l371f")
-
-[node name="Hexagons" type="Node3D" parent="World/World"]
-
-[node name="Highlight" type="Node3D" parent="World/World"]
-
-[node name="World" type="Node3D" parent="World/World"]
-script = ExtResource("1_o10kw")
-hexagon_count = 30
-height_mask = ExtResource("3_itcv2")
-terrain_type_criteria = Array[ExtResource("4_y6omn")]([SubResource("Resource_iqeip"), SubResource("Resource_k5c5d"), SubResource("Resource_0rgap")])
-terrain_types = Array[ExtResource("2_b56jq")]([SubResource("Resource_vgnlr"), SubResource("Resource_ilxcr"), SubResource("Resource_w0bmo")])
-hexagon_instance = ExtResource("5_u0dwq")
-water_instance = ExtResource("21_1hr1f")
-water_material = ExtResource("8_hs4hb")
-highlight_instance = ExtResource("8_l371f")
-
-[node name="Hexagons" type="Node3D" parent="World/World/World"]
-
-[node name="Highlight" type="Node3D" parent="World/World/World"]
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
