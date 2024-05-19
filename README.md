@@ -1,6 +1,6 @@
 # Godot 3D Hexagon World Editor
 
-A small project for generating and editing hexagon worlds. Inspired by https://www.reddit.com/r/blender/comments/butgsi/tried_mixing_a_lowpoly_style_with_a_hexagon/
+A small project for generating and editing hexagon worlds. Inspired by https://www.reddit.com/r/blender/comments/butgsi/tried_mixing_a_lowpoly_style_with_a_hexagon/. To run the project open it in the godot game engine. The terrain types, decorations etc can be changed by changing the parameters of the World object.
 
 ![Example](example.png)
 
@@ -38,4 +38,4 @@ A mode for toggling and regenerating the decoration for the selected hexagons. D
 
 **Controls:** \
 Left click: Add decoration \
-Left click + shift: Remove decoration \
+Left click + shift: Remove decoration
