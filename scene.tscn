@@ -126,7 +126,7 @@ camera_attributes = SubResource("CameraAttributesPractical_8t0jw")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 7.05588, 0)
 light_color = Color(1, 1, 0.827451, 1)
-light_energy = 0.169
+light_energy = 0.25
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
